@@ -8,256 +8,235 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RadioTest {
 
     @Test
-    public void shouldSetCurrentStation() {
+    public void shouldSetStation() {
         Radio radio = new Radio();
-        radio.setCurrentStation(7);
-        int expected = 7;
+        radio.setCurrentStation(5);
+        int expected = 5;
         int actual = radio.getCurrentStation();
         Assertions.assertEquals(expected, actual);
 
     }
 
     @Test
-    public void shouldSetMaxStation() {
+    public void shouldSetToMaxVolume() {
+        Radio radio = new Radio();
+        radio.getMaxVolume();
+        int expected = 100;
+        int actual = radio.getMaxVolume();
+        Assertions.assertEquals(expected,actual);
+    }
+    @Test
+    public void shouldSetToMinVolume() {
+        Radio radio = new Radio();
+        radio.getMinVolume();
+        int expected = 0;
+        int actual = radio.getMinVolume();
+        Assertions.assertEquals(expected, actual);
+    }
+    @Test
+    public void shouldSetToMaxRadiostation() {
+        Radio radio = new Radio();
+        radio.getMaxRadioStation();
+        int expected = 9;
+        int actual = radio.getMaxRadioStation();
+        Assertions.assertEquals(expected, actual);
+    }
+    @Test
+    public void shouldSetToMinRadiostation() {
+        Radio radio = new Radio();
+        radio.getMinRadioStation();
+        int expected = 0;
+        int actual = radio.getMinRadioStation();
+        Assertions.assertEquals(expected, actual);
+    }
+    @Test
+    public void shouldNotSetVolumeAboveMax() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(101);
+        int expected = 0;
+        int actual = radio.getCurrentVolume();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldIncreaseVolumeOnOne() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(99);
+        radio.increaseVolume();
+        int expected = 100;
+        int actual = radio.getCurrentVolume();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldDecreaseVolumeOnOne() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(100);
+        radio.belowVolumeToMax();
+        int expected = 99;
+        int actual = radio.getCurrentVolume();
+        Assertions.assertEquals(expected, actual);
+    }
+
+
+    @Test
+    public void stationOfMaxBorder() {
         Radio radio = new Radio();
         radio.setCurrentStation(9);
-        int expected = 9;
-        int actual = radio.getCurrentStation();
-
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldSetMinStation() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(0);
+        radio.increaseStation();
         int expected = 0;
         int actual = radio.getCurrentStation();
-
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void shouldNotSetStationAboveMax() {
+    public void stationBelowMax() {
         Radio radio = new Radio();
-        radio.setCurrentStation(10);
+        radio.setCurrentStation(2);
+        radio.increaseStation();
+        int expected = 3;
+        int actual = radio.getCurrentStation();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void ifCurrentStationLessThanZero() {
+        Radio radiostation = new Radio();
+        radiostation.setCurrentStation(-1);
+        int expected = 0;
+        int actual = radiostation.getCurrentStation();
+        Assertions.assertEquals(expected, actual);
+
+    }
+
+    @Test
+    public void ifCurrentStationMoreThanNine() {
+        Radio radio = new Radio();
+        radio.setCurrentStation(11);
         int expected = 0;
         int actual = radio.getCurrentStation();
-
         Assertions.assertEquals(expected, actual);
+
     }
 
     @Test
-    public void shouldNotSetStationBelowMin() {
+    public void buttonPrevStation() {
         Radio radio = new Radio();
-        radio.setCurrentStation(-1);
-        int expected = 0;
-        int actual = radio.getCurrentStation();
-
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldSwitchToNextBeginning() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(0);
-        radio.next();
+        radio.setCurrentStation(2);
+        radio.prevStation();
         int expected = 1;
         int actual = radio.getCurrentStation();
-
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void shouldSwitchToNextMiddle() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(5);
-        radio.next();
-        int expected = 6;
-        int actual = radio.getCurrentStation();
-
-        Assertions.assertEquals(expected, actual);
-    }
-    @Test
-    public void shouldSwitchToNextTheEnd() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(9);
-        radio.next();
-        int expected = 0;
-        int actual = radio.getCurrentStation();
-
-        Assertions.assertEquals(expected, actual);
-    }
-    @Test
-    public void shouldSwitchToPrevMiddle() {
-        Radio radio = new Radio();
-        radio.setCurrentStation(5);
-        radio.prev();
-        int expected = 4;
-        int actual = radio.getCurrentStation();
-
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void shouldSwitchToPrevBeginning() {
+    public void buttonPrevFromZero() {
         Radio radio = new Radio();
         radio.setCurrentStation(0);
-        radio.prev();
+        radio.prevStation();
         int expected = 9;
         int actual = radio.getCurrentStation();
-
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void shouldSwitchToPrevTheEnd() {
+    public void stationOfLowerBorder() {
         Radio radio = new Radio();
-        radio.setCurrentStation(9);
-        radio.prev();
-        int expected = 8;
+        radio.setCurrentStation(0);
+        radio.increaseStation();
+        int expected = 1;
         int actual = radio.getCurrentStation();
-
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void ShouldSetCurrentVolume() {
+    public void stationMax() {
         Radio radio = new Radio();
-        radio.setCurrentVolume(3);
-        int expected = 3;
-        int actual = radio.getCurrentVolume();
-
-        Assertions.assertEquals(expected, actual);
-
-    }
-
-
-    @Test
-    public void ShouldSetMaxVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(10);
-        int expected = 10;
-        int actual = radio.getCurrentVolume();
-
-        Assertions.assertEquals(expected, actual);
-
-    }
-
-    @Test
-    public void ShouldSetMinVolume() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(0);
-        int expected = 0;
-        int actual = radio.getCurrentVolume();
-
+        radio.setToMaxStation();
+        int expected = 9;
+        int actual = radio.getCurrentStation();
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void ShouldSetVolumeAboveMax() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(11);
-        int expected = 0;
-        int actual = radio.getCurrentVolume();
-
-        Assertions.assertEquals(expected, actual);
-
-    }
-
-    @Test
-    public void ShouldSetVolumeBelowMin() {
+    public void ifCurrentVolumeLessThanZero() {
         Radio radio = new Radio();
         radio.setCurrentVolume(-1);
         int expected = 0;
         int actual = radio.getCurrentVolume();
-
         Assertions.assertEquals(expected, actual);
+
     }
 
     @Test
-    public void ShouldIncreaseVolumeBeginning() {
+    public void ifCurrentVolumeMoreThanTen() {
         Radio radio = new Radio();
-        radio.setCurrentVolume(0);
-        radio.increaseVolume();
-        int expected = 1;
+        radio.setCurrentVolume(12);
+        int expected = 12;
         int actual = radio.getCurrentVolume();
-
         Assertions.assertEquals(expected, actual);
+
     }
 
     @Test
-    public void ShouldIncreaseVolumeMiddle() {
+    public void volumeMax() {
         Radio radio = new Radio();
-        radio.setCurrentVolume(5);
-        radio.increaseVolume();
-        int expected = 6;
-        int actual = radio.getCurrentVolume();
-
-        Assertions.assertEquals(expected, actual);
-    }
-
-    @Test
-    public void ShouldIncreaseVolumeTheEnd() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(10);
-        radio.increaseVolume();
+        radio.setToMaxVolume();
         int expected = 10;
         int actual = radio.getCurrentVolume();
-
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void ShouldDecreaseVolumeBeginningZero() {
+    public void buttonVolumeBelowMax() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(100);
+        radio.increaseVolume();
+        int expected = 100;
+        int actual = radio.getCurrentVolume();
+        Assertions.assertEquals(expected, actual);
+    }
+
+
+    @Test
+    public void buttonPrevVolume() {
+        Radio radio = new Radio();
+        radio.setCurrentVolume(4);
+        radio.belowVolumeToMax();
+        int expected = 3;
+        int actual = radio.getCurrentVolume();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void buttonPrevVolumeFromZero() {
         Radio radio = new Radio();
         radio.setCurrentVolume(0);
-        radio.decreaseVolume();
+        radio.belowVolumeToMax();
         int expected = 0;
         int actual = radio.getCurrentVolume();
-
         Assertions.assertEquals(expected, actual);
-
     }
 
     @Test
-    public void ShouldDecreaseVolumeBeginningOne() {
+    public void buttonPrevVolumeFromLowerBorder() {
         Radio radio = new Radio();
         radio.setCurrentVolume(1);
-        radio.decreaseVolume();
+        radio.belowVolumeToMax();
         int expected = 0;
         int actual = radio.getCurrentVolume();
-
         Assertions.assertEquals(expected, actual);
-
     }
 
     @Test
-    public void ShouldDecreaseVolumeMiddle() {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(3);
-        radio.decreaseVolume();
-        int expected = 2;
-        int actual = radio.getCurrentVolume();
-
-        Assertions.assertEquals(expected, actual);
-
-    }
-
-    @Test
-    public void ShouldDecreaseVolumeTheEnd() {
+    public void buttonPrevVolumeFromUpperBorder() {
         Radio radio = new Radio();
         radio.setCurrentVolume(10);
-        radio.decreaseVolume();
+        radio.belowVolumeToMax();
         int expected = 9;
         int actual = radio.getCurrentVolume();
-
         Assertions.assertEquals(expected, actual);
-
-
     }
-
-
 
 
 }
